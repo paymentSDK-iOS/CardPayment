@@ -9,6 +9,6 @@ import Foundation
 
 extension Bundle {
     static var CardPaymentSDK: Bundle? {
-        return Bundle(identifier: StringConstant.BundleIdentifire)
+        return Bundle(for: CardView.self)
     }
 }

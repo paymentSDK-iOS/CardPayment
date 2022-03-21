@@ -137,12 +137,12 @@
 		07BF567227E3301600B83456 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				07BF568A27E3301600B83456 /* payment.xcassets */,
 				07BF567527E3301600B83456 /* Utilities */,
 				07BF569327E3301600B83456 /* Resource */,
 				07BF568B27E3301600B83456 /* Model */,
 				07BF568D27E3301600B83456 /* View */,
 				07BF567327E3301600B83456 /* ViewModel */,
-				07BF568A27E3301600B83456 /* payment.xcassets */,
 			);
 			path = framework;
 			sourceTree = "<group>";
@@ -160,7 +160,6 @@
 			children = (
 				07BF567627E3301600B83456 /* Validator */,
 				07BF567A27E3301600B83456 /* Extension */,
-				07BF567E27E3301600B83456 /* BundleExtension.swift */,
 				07BF567F27E3301600B83456 /* ApiManager */,
 				07BF568127E3301600B83456 /* Formatter */,
 				07BF568527E3301600B83456 /* Constant */,
@@ -181,6 +180,7 @@
 		07BF567A27E3301600B83456 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				07BF567E27E3301600B83456 /* BundleExtension.swift */,
 				07BF567B27E3301600B83456 /* UIViewExtension.swift */,
 				07BF567C27E3301600B83456 /* UIFontExtension.swift */,
 				07BF567D27E3301600B83456 /* StringExtension.swift */,

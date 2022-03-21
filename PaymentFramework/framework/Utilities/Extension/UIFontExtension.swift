@@ -11,9 +11,10 @@ import UIKit
 extension UIFont {
     /// register Font in framework
     private static func registerFont(withName name: String, fileExtension: String) {
-        let frameworkBundle = Bundle(identifier: StringConstant.BundleIdentifire)
-        let pathForResourceString = frameworkBundle?.path(forResource: name, ofType: fileExtension)
-        let fontData = NSData(contentsOfFile: pathForResourceString!)
+        let frameworkBundle = Bundle.CardPaymentSDK
+        print(frameworkBundle?.bundleIdentifier)
+        guard let pathForResourceString = frameworkBundle?.path(forResource: name, ofType: fileExtension) else {return}
+        let fontData = NSData(contentsOfFile: pathForResourceString)
         let dataProvider = CGDataProvider(data: fontData!)
         let fontRef = CGFont(dataProvider!)
         var errorRef: Unmanaged<CFError>? = nil
@@ -24,6 +25,6 @@ extension UIFont {
     }
     ///Load CREDCARD-ragular.ttf Font File
     public static func loadFonts() {
-//        registerFont(withName: "CREDCARD-ragular", fileExtension: ".ttf")
+        registerFont(withName: "CREDCARD-ragular", fileExtension: ".ttf")
     }
 }

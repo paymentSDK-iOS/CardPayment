@@ -36,7 +36,5 @@ class StringConstant{
     static var labelDefaultExpiryDate                        = "MM/YY"
     static var labelDefaultCVV                               = "XXX"
     
-    //MARK: - Bundle Identifire
-    static var BundleIdentifire                              = "com.crawlapps.PaymentFramework"
 }
 
