@@ -27,8 +27,8 @@ Pod::Spec.new do |spec|
   spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
   spec.platform     = :ios, "13.0"
   spec.source       = { :git => "https://github.com/kishanSatapara612/CardPayment.git", :tag => "#{spec.version}" }
-  spec.source_files  = "PaymentFramework", "PaymentFramework/framework/*"
-  spec.exclude_files = "PaymentFramework/framework"
+  spec.source_files  = "PaymentFramework", "PaymentFramework/framework/View/CardPaymentViewController.{swift}"
+  # spec.exclude_files = "PaymentFramework/framework"
   spec.swift_version = "5.0"
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -98,9 +98,9 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "PaymentFramework", "PaymentFramework/framework/**/*.{swift}"
-  spec.exclude_files = "PaymentFramework/framework"
-  spec.swift_version = "5.0"
+  # spec.source_files  = "PaymentFramework", "PaymentFramework/framework/**/*.{swift}"
+  # spec.exclude_files = "PaymentFramework/framework"
+  # spec.swift_version = "5.0"
   # spec.public_header_files = "Classes/**/*.h"
 
 
