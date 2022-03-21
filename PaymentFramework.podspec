@@ -18,17 +18,24 @@ Pod::Spec.new do |spec|
   spec.name         = "PaymentFramework"
   spec.version      = "1.0.0"
   spec.summary      = "A small framework to payment any card in Swift."
-
-  # This description is used to generate tags and improve search results.
-  #   * Think: What does it do? Why did you write it? What is the focus?
-  #   * Try to keep it short, snappy and to the point.
-  #   * Write the description between the DESC delimiters below.
-  #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
   PaymentFramework is a small and lightweight Swift framework that allows to payment any card using (email, card number, expirydate and cvv) in a super-easy way!
                    DESC
 
   spec.homepage     = "https://appcoda.com"
+  spec.license      = { :type => "MIT", :file => "LICENSE" }
+  spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
+  spec.platform     = :ios, "13.0"
+  spec.source       = { :git => "https://github.com/kishanSatapara612/CardPayment.git", :tag => "#{spec.version}" }
+  spec.source_files  = "PaymentFramework", "PaymentFramework/framework/*"
+  spec.exclude_files = "PaymentFramework/framework"
+  spec.swift_version = "5.0"
+  # This description is used to generate tags and improve search results.
+  #   * Think: What does it do? Why did you write it? What is the focus?
+  #   * Try to keep it short, snappy and to the point.
+  #   * Write the description between the DESC delimiters below.
+  #   * Finally, don't worry about the indent, CocoaPods strips it!
+
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -40,7 +47,7 @@ Pod::Spec.new do |spec|
   #
 
   # spec.license      = "MIT (example)"
-  spec.license      = { :type => "MIT", :file => "LICENSE" }
+
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -53,7 +60,7 @@ Pod::Spec.new do |spec|
   #  profile URL.
   #
 
-  spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
+  # spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
   # Or just: spec.author    = "Kishan_satapara"
   # spec.authors            = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
   # spec.social_media_url   = "https://twitter.com/Kishan_satapara"
@@ -65,10 +72,10 @@ Pod::Spec.new do |spec|
   #
 
   # spec.platform     = :ios
-  spec.platform     = :ios, "13.0"
+  
 
   #  When using multiple platforms
-  spec.ios.deployment_target = "13.0"
+  # spec.ios.deployment_target = "13.0"
   # spec.osx.deployment_target = "10.7"
   # spec.watchos.deployment_target = "2.0"
   # spec.tvos.deployment_target = "9.0"
@@ -80,7 +87,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/kishanSatapara612/CardPayment.git", :tag => "#{spec.version}" }
+  
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
