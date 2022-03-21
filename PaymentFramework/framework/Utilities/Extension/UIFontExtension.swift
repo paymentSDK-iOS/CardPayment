@@ -24,6 +24,6 @@ extension UIFont {
     }
     ///Load CREDCARD-ragular.ttf Font File
     public static func loadFonts() {
-        registerFont(withName: "CREDCARD-ragular", fileExtension: ".ttf")
+//        registerFont(withName: "CREDCARD-ragular", fileExtension: ".ttf")
     }
 }

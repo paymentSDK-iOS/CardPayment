@@ -27,7 +27,8 @@ Pod::Spec.new do |spec|
   spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
   spec.platform     = :ios, "13.0"
   spec.source       = { :git => "https://github.com/kishanSatapara612/CardPayment.git", :tag => "#{spec.version}" }
-  spec.source_files  = "PaymentFramework", "PaymentFramework/framework/**/*.{swift}"
+  spec.source_files  = "PaymentFramework", "PaymentFramework/***/**/*.{swift,ttf}"
+  spec.resources  = "PaymentFramework", "PaymentFramework/**/*.{xcassets}"
   # spec.exclude_files = "PaymentFramework/framework"
   spec.swift_version = "5.0"
   # This description is used to generate tags and improve search results.
