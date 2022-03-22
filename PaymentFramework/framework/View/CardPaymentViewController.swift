@@ -102,7 +102,7 @@ extension CardPaymentViewController{
 
 //MARK: - Methods
 extension CardPaymentViewController{
-    func setEmail(email:String){
+    open func setEmail(email:String){
         if email.isValidEmail(){
             _model.cardPaymentmodel.email = email
         }
