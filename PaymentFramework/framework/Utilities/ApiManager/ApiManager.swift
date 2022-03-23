@@ -11,9 +11,9 @@ class APIManager{
     
     //MARK: Shared Instance
     static let shared = APIManager()
-    
-    var apikey:String?
-    var token:String?
+//
+//    var apikey:String?
+//    var token:String?
     
     //MARK: - Constant
     struct Constants {
@@ -51,7 +51,7 @@ class APIManager{
         static let AuthorizationHeader = "Authorization"
         static let userAgentHeader = "User-Agent"
         static let jsonContentType = "application/json"
-        
+        static let myauth = "myauth"
     }
     
     struct ApiKey:Decodable{
@@ -64,13 +64,16 @@ class APIManager{
 }
 
 extension APIManager{
-    func getPostData(url:String,body:[String:Any],apikey:String? = nil,complitionHandler: @escaping(Data?,Error?)-> ()){
+    func getPostData(url:String,body:[String:Any],apikey:String? = nil,authName:String? = nil,complitionHandler: @escaping(Data?,Error?)-> ()){
         guard let url = URL(string: url) else{ return }
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethods.httpMethodPost
         request.addValue(HTTPMethods.contentTypeHeader, forHTTPHeaderField: HTTPMethods.jsonContentType)
         if let apikey = apikey {
             request.addValue(apikey, forHTTPHeaderField: HTTPMethods.AuthorizationHeader)
+        }
+        if let authName = authName {
+            request.addValue(authName, forHTTPHeaderField: HTTPMethods.myauth)
         }
         
         // prepare json data

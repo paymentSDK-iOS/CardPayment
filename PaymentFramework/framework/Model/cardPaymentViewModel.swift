@@ -16,10 +16,18 @@ struct CardPaymentModel {
     // MARK: Inputs
     var number: String?
     var name:String?
-    var email:String?
     var expiryYear: Int?
     var expiryMonth: Int?
     var cvv: String?
+    
+    var apikey:String?
+    var token:String?
+    
+    var email:String?
+    var country:String?
+    var currency:String?
+    var amount:Int = 0
+    var endpoint:String?
     
     var currentYear: Int
     var currentMonth: Int

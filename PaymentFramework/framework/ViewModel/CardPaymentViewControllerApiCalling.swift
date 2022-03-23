@@ -27,98 +27,111 @@ class CardPaymentViewModel{
         }
     }
     
-    
     func start(){
         guard let showLoading = showLoading else {
             return
         }
         showLoading()
-        APIManager.shared.getPostData(url: APIManager.Constants.URLs.REGISTER_API, body: ["email":cardPaymentmodel.email ?? ""]) { data, error in
+        
+        self.getApiKey()
+//        self.getToken()
+//        self.PaymentForword()
+    }
+}
+
+extension CardPaymentViewModel{
+    private func getApiKey(){
+        let body:[String:Any] = [StringConstant.bodyemail:cardPaymentmodel.email ?? ""]
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.REGISTER_API, body: body) { data, error in
             guard let data = data else {
                 DispatchQueue.main.async {
-                    guard let hideLoading = self.hideLoading else {
-                        return
-                    }
-                    hideLoading()
-                }
-                DispatchQueue.main.async {
-                    guard let showError = self.showError else {
-                        return
-                    }
-                    showError(error)
+                    self.presentError(error)
                 }
                 return
             }
             do{
                 let resp = try JSONDecoder().decode(APIManager.ApiKey.self, from: data)
                 DispatchQueue.main.async {
-                    APIManager.shared.apikey = resp.apikey
+                    self.cardPaymentmodel.apikey = resp.apikey
                     DispatchQueue.main.async {
-                        guard let hideLoading = self.hideLoading else {
-                            return
-                        }
-                        hideLoading()
+//                        self.presentLodingHide()
+                        self.getToken()
                     }
                 }
-               
             }
             catch{
                 DispatchQueue.main.async {
-                    guard let hideLoading = self.hideLoading else {
-                        return
-                    }
-                    hideLoading()
-                }
-                
-                DispatchQueue.main.async {
-                    guard let showError = self.showError else {
-                        return
-                    }
-                    showError(error)
+                    self.presentError(error)
                 }
             }
         }
-        
-        APIManager.shared.getPostData(url: APIManager.Constants.URLs.TOKENIZE_API, body: ["plaintext":["number":cardPaymentmodel.number,"expiry":"\(cardPaymentmodel.expiryMonth ?? 00)/\(cardPaymentmodel.expiryYear ?? 00 )","cvv":cardPaymentmodel.cvv]], apikey: APIManager.shared.apikey) { data, error in
+    }
+    
+    private func getToken(){
+        let body:[String:Any] = [StringConstant.bodyplaintext:[StringConstant.bodynumber:cardPaymentmodel.number,StringConstant.bodyexpiry:"\(cardPaymentmodel.expiryMonth ?? 00)/\(cardPaymentmodel.expiryYear ?? 00 )",StringConstant.bodycvv:cardPaymentmodel.cvv]]
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.TOKENIZE_API, body: body, apikey: cardPaymentmodel.apikey) { data, error in
             guard let data = data else {
                 DispatchQueue.main.async {
-                    guard let hideLoading = self.hideLoading else {
-                        return
-                    }
-                    hideLoading()
-                }
-                DispatchQueue.main.async {
-                    guard let showError = self.showError else {
-                        return
-                    }
-                    showError(error)
+                    self.presentError(error)
                 }
                 return
             }
             do{
                 let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
-                APIManager.shared.token = resp.token
+                self.cardPaymentmodel.token = resp.token
                 DispatchQueue.main.async {
-                    guard let hideLoading = self.hideLoading else {
-                        return
-                    }
-                    hideLoading()
+//                    self.presentLodingHide()
+                    self.PaymentForword()
                 }
             }
             catch{
                 DispatchQueue.main.async {
-                    guard let hideLoading = self.hideLoading else {
-                        return
-                    }
-                    hideLoading()
-                }
-                DispatchQueue.main.async {
-                    guard let showError = self.showError else {
-                        return
-                    }
-                    showError(error)
+                    self.presentError(error)
                 }
             }
         }
+    }
+    
+    private func PaymentForword(){
+        let body:[String:Any] = [StringConstant.bodyheaders:[StringConstant.bodymyauth:123],StringConstant.bodybody:[StringConstant.bodyname:cardPaymentmodel.name ?? "",StringConstant.bodycountry:cardPaymentmodel.country ?? "",StringConstant.bodycurrency:cardPaymentmodel.currency ?? "",StringConstant.bodyamount:cardPaymentmodel.amount,StringConstant.bodycc:"{{json:\(String(describing: cardPaymentmodel.token)):number}}", StringConstant.bodendpoint:cardPaymentmodel.endpoint ?? ""]]
+        
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.FORWARD_API, body: body, apikey: cardPaymentmodel.apikey) { data, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.presentError(error)
+                }
+                return
+            }
+            do{
+                let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
+                self.cardPaymentmodel.token = resp.token
+                DispatchQueue.main.async {
+                    self.presentLodingHide()
+                }
+            }
+            catch{
+                DispatchQueue.main.async {
+                    self.presentError(error)
+                }
+            }
+        }
+    }
+}
+    
+extension CardPaymentViewModel{
+    private func presentError(_ error:Error?){
+        presentLodingHide()
+        DispatchQueue.main.async {
+            guard let showError = self.showError else {
+                return
+            }
+            showError(error)
+        }
+    }
+    private func presentLodingHide(){
+        guard let hideLoading = self.hideLoading else {
+            return
+        }
+        hideLoading()
     }
 }

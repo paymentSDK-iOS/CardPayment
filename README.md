@@ -36,7 +36,7 @@ class ViewController: CardPaymentViewController {
 }
 ```
 
-In `ViewController` in `viewDidLoad()` func call setemail method and assign your email 
+In `ViewController` in `viewDidLoad()` assign your email, amount, country currency and endpoint  
 ```swift
 class ViewController: CardPaymentViewController {
 
@@ -44,7 +44,11 @@ class ViewController: CardPaymentViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        setEmail(email: "payment@gmail.com")
+        email = "kishan.crawlapps@gmail.com"
+        amount = 125
+        country = "IE"
+        currency = "EUR"
+        endpoint = "some endpoint"
         ...
     }
 }

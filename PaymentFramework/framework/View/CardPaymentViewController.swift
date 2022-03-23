@@ -16,13 +16,59 @@ import UIKit
     @IBInspectable public var activityIndicator = UIActivityIndicatorView()
     
     //MARK: - Properties
+    
+    var _model: CardPaymentViewModel = CardPaymentViewModel.shared
+    
+    /// The navigationTitle  set title in cardPaymentViewController navigationBar Title
     @IBInspectable public var NavigationTitle = ""{
         didSet{
             self.title = NavigationTitle
         }
     }
     
-    var _model: CardPaymentViewModel = CardPaymentViewModel.shared
+    /// The email set in card payment model for use apikey get
+    @IBInspectable public var email: String? = nil{ didSet {
+        if let email = email,email.isValidEmail(){
+            _model.cardPaymentmodel.email = email
+        }
+        else{
+            _model.cardPaymentmodel.email = nil
+        }
+    } }
+    
+    /// The country set in card payment model for use payment
+    @IBInspectable public var country: String? = nil{ didSet {
+        if let country = country{
+            _model.cardPaymentmodel.country = country
+        }
+        else{
+            _model.cardPaymentmodel.country = nil
+        }
+    } }
+    /// The currency set in card payment model for use payment
+    @IBInspectable public var currency: String? = nil{ didSet {
+        if let currency = currency{
+            _model.cardPaymentmodel.currency = currency
+        }
+        else{
+            _model.cardPaymentmodel.currency = nil
+        }
+    } }
+    
+    /// The amount set in card payment model for use payment
+    @IBInspectable public var amount: Int = 0{ didSet {
+        _model.cardPaymentmodel.amount = amount
+    } }
+
+    /// The endpoint set in card payment model for use payment
+    @IBInspectable public var endpoint: String? = nil{ didSet {
+        if let endpoint = endpoint{
+            _model.cardPaymentmodel.endpoint = endpoint
+        }
+        else{
+            _model.cardPaymentmodel.endpoint = nil
+        }
+    } }
     
     //MARK: - View Controller Life Cycle Methods
     open override func viewDidLoad() {
@@ -31,7 +77,6 @@ import UIKit
         setupView()
     
     }
-    
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -63,9 +108,6 @@ extension CardPaymentViewController{
         _model.showError = { error in
             self.alertGenrate(title: "error", message:error?.localizedDescription ?? "" )
         }
-//        cardPaumentView.setEmail("abc@gmail.com");
-//        cardPaumentView.iconColor = .blue
-//        cardPaumentView.themeColor = . red
     }
 
     /// set UIConstrain
@@ -102,14 +144,6 @@ extension CardPaymentViewController{
 
 //MARK: - Methods
 extension CardPaymentViewController{
-    open func setEmail(email:String){
-        if email.isValidEmail(){
-            _model.cardPaymentmodel.email = email
-        }
-        else{
-            
-        }
-    }
     
     func alertGenrate(title:String,message:String){
         if `self` == self{
