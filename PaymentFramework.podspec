@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "PaymentFramework"
-  spec.version      = "1.0.0"
+  spec.version      = "1.0.1"
   spec.summary      = "A small framework to payment any card in Swift."
   spec.description  = <<-DESC
   PaymentFramework is a small and lightweight Swift framework that allows to payment any card using (email, card number, expirydate and cvv) in a super-easy way!
