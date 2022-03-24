@@ -34,7 +34,7 @@ struct CardPaymentModel {
     
     var numberOfExpiryYears = 20
     var expiryFormatter = DateFormatter()
-    
+    var isEnable = false
     var calendar: Calendar = .current
     
     fileprivate var expiryDate: Date? {

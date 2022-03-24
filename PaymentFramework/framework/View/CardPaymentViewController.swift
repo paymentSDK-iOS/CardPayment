@@ -82,6 +82,21 @@ import UIKit
         super.viewWillAppear(true)
         setUIConstrain()
         cardPaumentView.cardView.addShadow(color: ColorConstant.shadowColor, radius: 5)
+        _model.showLoading = {
+            self.activityIndicator.startAnimating()
+            if self._model.cardPaymentmodel.isEnable{
+                self.cardPaumentView.inputFieldDisable(isDisable: true)
+            }else{
+                self.cardPaumentView.inputFieldDisable(isDisable: false)
+            }
+        }
+        _model.hideLoading = {
+            self.stopActivity()
+            self.cardPaumentView.inputFieldDisable(isDisable: true)
+        }
+        _model.showError = { error in
+            self.alertGenrate(title: "error", message:error?.localizedDescription ?? "" )
+        }
     }
 }
 
@@ -99,16 +114,8 @@ extension CardPaymentViewController{
         self.NavigationTitle = "Payment"
         setUIConstrain()
         
-        _model.showLoading = {
-            self.activityIndicator.startAnimating()
-        }
-        _model.hideLoading = {
-            self.stopActivity()
-        }
-        _model.showError = { error in
-            self.alertGenrate(title: "error", message:error?.localizedDescription ?? "" )
-        }
     }
+    
 
     /// set UIConstrain
     private func setUIConstrain(){

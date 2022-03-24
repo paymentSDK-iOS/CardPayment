@@ -29,6 +29,8 @@ import UIKit
     @IBInspectable public var textColor: UIColor = ColorConstant.textColor { didSet { updateStyling() } }
     /// The color used for placeholder in the fields.
     @IBInspectable public var placeHolderColor: UIColor = ColorConstant.textColor { didSet { updateStyling() } }
+    /// The color used for placeholder in the fields.
+    @IBInspectable public var fieldIsDisable: Bool = false { didSet { _model.cardPaymentmodel.isEnable = fieldIsDisable } }
     
     /// Card number field placeholder text.  Use this property for localization.
     @IBInspectable public var cardNumberPlaceholderText: String? {
@@ -495,6 +497,13 @@ extension cardPaymentView {
         cvvField.resignFirstResponder()
         sendActions(for: .editingDidEnd)
         return true
+    }
+    
+    public func inputFieldDisable(isDisable :Bool){
+        numberField.isUserInteractionEnabled = isDisable
+        expiryField.isUserInteractionEnabled = isDisable
+        cvvField.isUserInteractionEnabled = isDisable
+        buttonPay.isUserInteractionEnabled = isDisable
     }
 }
 
