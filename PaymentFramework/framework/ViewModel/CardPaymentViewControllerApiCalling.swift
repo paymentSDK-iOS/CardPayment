@@ -7,6 +7,10 @@
 
 import UIKit
 
+public enum responce{
+    case sucess
+    case fail
+}
 class CardPaymentViewModel{
     
     //MARK: Shared Instance
@@ -17,6 +21,7 @@ class CardPaymentViewModel{
     var showLoading: (()->())?
     var hideLoading: (()->())?
     var modelDidSet: (()->())?
+    var afterPayment: ((responce)->())?
     
     var cardPaymentmodel:CardPaymentModel = CardPaymentModel.shared {
         didSet{

@@ -14,7 +14,7 @@ import UIKit
     @IBInspectable public var viewScrolling = UIView()
     @IBInspectable public var cardPaumentView = cardPaymentView()
     @IBInspectable public var activityIndicator = UIActivityIndicatorView()
-    
+    public var afterPayment: ((responce)->())?
     //MARK: - Properties
     
     var _model: CardPaymentViewModel = CardPaymentViewModel.shared
