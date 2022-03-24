@@ -15,7 +15,7 @@ The iOS SDK can be manualy included in your project by downloading or cloning th
 If you would like to use [Carthage]( https://github.com/Carthage/Carthage) to integrate the sdk into your project, you can do so with the following line in your cartfile.
 
 ```
-  pod 'PaymentFramework', :git => 'https://github.com/kishanSatapara612/CardPayment.git'
+  pod 'PaymentFramework', :git => 'https://github.com/paymentSDK-iOS/CardPayment.git'
 ```
 
 ## Usage
