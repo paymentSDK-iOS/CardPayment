@@ -44,7 +44,7 @@ class ViewController: CardPaymentViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        email = "kishan.crawlapps@gmail.com"
+        email = "payment@gmail.com"
         amount = 125
         country = "IE"
         currency = "EUR"
