@@ -6,7 +6,7 @@ The iOS SDK by PaymentSDK allows you to create a apikey for payment and create a
 
 <p align="center">
     <img src="https://github.com/paymentSDK-iOS/CardPayment/blob/main/ScreenShot.png" width="250" height="500"/>
-    <img src="https://github.com/paymentSDK-iOS/CardPayment/blob/main/ScreenShot2.png" width="250" height="500"/>
+    <img src="https://github.com/paymentSDK-iOS/CardPayment/blob/main/ScreenShot1.png" width="250" height="500"/>
 </p>
 
 
