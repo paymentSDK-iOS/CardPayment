@@ -97,6 +97,14 @@ import UIKit
         _model.showError = { error in
             self.alertGenrate(title: "error", message:error?.localizedDescription ?? "" )
         }
+        _model.afterPayment = { responce in
+            switch responce{
+            case .sucess:
+                self.navigationController?.popViewController(animated: true)
+            case .fail:
+                break
+            }
+        }
     }
 }
 

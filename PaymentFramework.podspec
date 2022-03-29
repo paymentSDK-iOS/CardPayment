@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
   PaymentFramework is a small and lightweight Swift framework that allows to payment any card using (email, card number, expirydate and cvv) in a super-easy way!
                    DESC
 
-  spec.homepage     = "https://appcoda.com"
+  spec.homepage     = "https://github.com/paymentSDK-iOS/CardPayment"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author             = { "Kishan_satapara" => "kishan.crawlapps@gmail.com" }
   spec.platform     = :ios, "13.0"
