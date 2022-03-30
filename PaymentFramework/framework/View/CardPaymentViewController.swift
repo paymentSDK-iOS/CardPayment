@@ -15,6 +15,7 @@ import UIKit
     @IBInspectable public var cardPaumentView = cardPaymentView()
     @IBInspectable public var activityIndicator = UIActivityIndicatorView()
     public var afterPayment: ((responce)->())?
+    
     //MARK: - Properties
     
     var _model: CardPaymentViewModel = CardPaymentViewModel.shared
@@ -121,10 +122,8 @@ extension CardPaymentViewController{
         viewScrolling.addSubview(activityIndicator)
         self.NavigationTitle = "Payment"
         setUIConstrain()
-        
     }
     
-
     /// set UIConstrain
     private func setUIConstrain(){
         scrollView.translatesAutoresizingMaskIntoConstraints = false

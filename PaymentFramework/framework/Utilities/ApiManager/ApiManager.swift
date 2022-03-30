@@ -18,12 +18,12 @@ class APIManager{
     //MARK: - Constant
     struct Constants {
         struct URLs {
-            static var  BASE_API:String = "https://getway_id.execute-api.eu-west-1.amazonaws.com/staging/api"
+            static var  BASE_API:String = "https://stage-api.stage-easymerchant.io/api/tokenizer"
             static var REGISTER_API:String {
                 return Constants.URLs.BASE_API+"/users/register"
             }
             static var TOKENIZE_API:String {
-                return Constants.URLs.BASE_API+"/tk/toknize"
+                return Constants.URLs.BASE_API+"/tokenizer/token/create"
             }
             static var FORWARD_API:String {
                 return Constants.URLs.BASE_API+"/tk/forward"

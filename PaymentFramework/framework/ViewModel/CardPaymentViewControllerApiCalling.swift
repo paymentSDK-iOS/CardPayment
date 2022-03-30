@@ -60,6 +60,7 @@ extension CardPaymentViewModel{
                     self.cardPaymentmodel.apikey = resp.apikey
                     DispatchQueue.main.async {
 //                        self.presentLodingHide()
+                        print(self.cardPaymentmodel.apikey)
                         self.getToken()
                     }
                 }

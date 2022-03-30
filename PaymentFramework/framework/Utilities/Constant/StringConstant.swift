@@ -39,7 +39,7 @@ class StringConstant{
     //MARK: - BodyContent
     static var bodyemail                                     = "email"
     static var bodyplaintext                                 = "plaintext"
-    static var bodynumber                                    = "number"
+    static var bodynumber                                    = "creditCard"
     static var bodyexpiry                                    = "expiry"
     static var bodycvv                                       = "cvv"
     static var bodyheaders                                   = "headers"
