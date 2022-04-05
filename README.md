@@ -5,8 +5,8 @@
 The iOS SDK by PaymentSDK allows you to create a apikey for payment and create a card token using apikey (one time use token representing card details) in your iOS app to send to a server to enable it to make a payment. By creating a card token, PaymentSDK allows you to avoid sending card details to your server. The SDK can help with formatting and validating card information before the information is tokenized.
 
 <p align="center">
-    <img src="https://github.com/paymentSDK-iOS/CardPayment/ScreenShot.png" width="250" height="500"/>
-    <img src="https://github.com/paymentSDK-iOS/CardPayment/ScreenShot2.png" width="250" height="500"/>
+    <img src="https://github.com/paymentSDK-iOS/CardPayment/blob/main/ScreenShot.png" width="250" height="500"/>
+    <img src="https://github.com/paymentSDK-iOS/CardPayment/blob/main/ScreenShot1.png" width="250" height="500"/>
 </p>
 
 
@@ -22,7 +22,7 @@ The iOS SDK can be manualy included in your project by downloading or cloning th
 If you would like to use [Carthage]( https://github.com/Carthage/Carthage) to integrate the sdk into your project, you can do so with the following line in your cartfile.
 
 ```
-  pod 'PaymentFramework', :git => 'https://github.com/paymentSDK-iOS/CardPayment.git'
+  pod 'PaymentFramework'
 ```
 
 ## Usage
