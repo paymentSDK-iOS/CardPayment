@@ -12,7 +12,7 @@ import UIKit
     
     //MARK: - Outlets
     /// A boolean indicating if the card details provided pass all the validation (length, Luhn, expiration, etc.)
-    public var isValid: Bool { return _model.cardPaymentmodel.cardValid }
+    public var isValid: Bool { return _model.cardmodel.cardValid }
     /// The color of the border on each field
     @IBInspectable public var borderColor: UIColor = ColorConstant.borderColor { didSet { updateStyling() } }
     /// The color of the background on buttonPay and CardView
@@ -30,7 +30,7 @@ import UIKit
     /// The color used for placeholder in the fields.
     @IBInspectable public var placeHolderColor: UIColor = ColorConstant.textColor { didSet { updateStyling() } }
     /// The color used for placeholder in the fields.
-    @IBInspectable public var fieldIsDisable: Bool = false { didSet { _model.cardPaymentmodel.isEnable = fieldIsDisable } }
+    @IBInspectable public var fieldIsDisable: Bool = false { didSet { _model.cardmodel.isEnable = fieldIsDisable } }
     
     /// Card number field placeholder text.  Use this property for localization.
     @IBInspectable public var cardNumberPlaceholderText: String? {
@@ -109,7 +109,7 @@ extension cardPaymentView {
     /// set Properties
     private func setupView() {
         _model.modelDidSet = {[self] in
-            render(_model.cardPaymentmodel)
+            render(_model.cardmodel)
             sendActions(for: .valueChanged)
         }
         
@@ -153,7 +153,7 @@ extension cardPaymentView {
         setupStaticValues()
         
         // render the initial state
-        render(_model.cardPaymentmodel)
+        render(_model.cardmodel)
     }
     
     /// Set UI Constrain
@@ -231,7 +231,7 @@ extension cardPaymentView {
     }
     
     // if model any properties value cahnge call this method
-    private func render(_ viewModel: CardPaymentModel) {
+    private func render(_ viewModel: CardModel) {
         numberField.icon = viewModel.cardBrandIcon
         cardView.icon = viewModel.cardBrandIcon
         
@@ -258,7 +258,7 @@ extension cardPaymentView {
 //MARK: - @IBActions
 extension cardPaymentView {
     @IBAction func numberChanged(_ sender: Any) {
-        _model.cardPaymentmodel.formattedCardNumber = numberField.text
+        _model.cardmodel.formattedCardNumber = numberField.text
     }
 
 //    @IBAction func expiryDateChanged(_ sender: Any) {
@@ -266,11 +266,11 @@ extension cardPaymentView {
 //    }
     
     @IBAction func expiryChanged(_ sender: Any) {
-        _model.cardPaymentmodel.updateExpirySelection(month: expiryField.selectedMonthIndex, year: expiryField.selectedYearIndex)
+        _model.cardmodel.updateExpirySelection(month: expiryField.selectedMonthIndex, year: expiryField.selectedYearIndex)
     }
     
     @IBAction func cvcChanged(_ sender: Any) {
-        _model.cardPaymentmodel.formattedExpiryCvv = cvvField.text
+        _model.cardmodel.formattedExpiryCvv = cvvField.text
     }
     
     @IBAction func numberEditingBegan(_ sender: Any) {
@@ -295,7 +295,7 @@ extension cardPaymentView {
 //    }
     
     @IBAction func expiryEditingBegan(_ sender: Any) {
-        _model.cardPaymentmodel.initiateExpiryEditing()
+        _model.cardmodel.initiateExpiryEditing()
 //        expiryField.underlineColor = tintColor
 //        expiryField.borderColor = themeColor
         nextButton.target = self
@@ -310,7 +310,7 @@ extension cardPaymentView {
     }
     
     @IBAction func numberEditingEnded() {
-        if _model.cardPaymentmodel.numberValid{
+        if _model.cardmodel.numberValid{
 //            numberField.underlineColor = underlineColor/
             numberField.borderColor = borderColor
 //            numberField.error = nil
@@ -338,11 +338,11 @@ extension cardPaymentView {
     
     @IBAction func expiryEditingEnded() {
 //        expiryField.underlineColor = _model.expiryValid ? underlineColor : errorColor
-        expiryField.borderColor = _model.cardPaymentmodel.expiryValid ? borderColor : errorColor
+        expiryField.borderColor = _model.cardmodel.expiryValid ? borderColor : errorColor
     }
     
     @IBAction func cvcEditingEnded() {
-        if _model.cardPaymentmodel.cvvValid{
+        if _model.cardmodel.cvvValid{
 //            cvvField.underlineColor = underlineColor
             cvvField.borderColor = borderColor
 //            cvvField.error = nil
@@ -359,10 +359,18 @@ extension cardPaymentView {
     @IBAction func PayAction(_ sender: Any) {
         if !isValid{
             setBorderColor()
+            if _model.usermodel.email == nil{
+                _model.viewController?.alertGenrate(title: "Email Invalid", message: "Plaese enter right email.")
+            }
         }
         else{
-            _ = resignFirstResponder()
-            _model.start()
+            if !_model.usermodel.email!.isValidEmail(){
+                _model.viewController?.alertGenrate(title: "Email Invalid", message: "Plaese enter right email.")
+            }
+            else{
+                _ = resignFirstResponder()
+                _model.start()
+            }
         }
         
     }
@@ -436,17 +444,17 @@ extension cardPaymentView {
 //MARK: - private Methods
 extension cardPaymentView {
     private func setBorderColor(){
-        numberField.borderColor = _model.cardPaymentmodel.numberValid ? borderColor : errorColor
-        expiryField.borderColor = _model.cardPaymentmodel.expiryValid ? borderColor : errorColor
-        cvvField.borderColor = _model.cardPaymentmodel.cvvValid ? borderColor : errorColor
+        numberField.borderColor = _model.cardmodel.numberValid ? borderColor : errorColor
+        expiryField.borderColor = _model.cardmodel.expiryValid ? borderColor : errorColor
+        cvvField.borderColor = _model.cardmodel.cvvValid ? borderColor : errorColor
         
-        if !_model.cardPaymentmodel.numberValid{
+        if !_model.cardmodel.numberValid{
             numberField.becomeFirstResponder()
         }
-        else if !_model.cardPaymentmodel.expiryValid{
+        else if !_model.cardmodel.expiryValid{
             expiryField.becomeFirstResponder()
         }
-        else if !_model.cardPaymentmodel.cvvValid{
+        else if !_model.cardmodel.cvvValid{
             cvvField.becomeFirstResponder()
         }
     }

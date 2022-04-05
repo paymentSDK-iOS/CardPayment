@@ -29,45 +29,44 @@ import UIKit
     
     /// The email set in card payment model for use apikey get
     @IBInspectable public var email: String? = nil{ didSet {
-        if let email = email,email.isValidEmail(){
-            _model.cardPaymentmodel.email = email
-        }
-        else{
-            _model.cardPaymentmodel.email = nil
+        if let email = email{
+            if email.isValidEmail(){
+                _model.usermodel.email = email
+            }
         }
     } }
     
     /// The country set in card payment model for use payment
     @IBInspectable public var country: String? = nil{ didSet {
         if let country = country{
-            _model.cardPaymentmodel.country = country
+            _model.usermodel.country = country
         }
         else{
-            _model.cardPaymentmodel.country = nil
+            _model.usermodel.country = nil
         }
     } }
     /// The currency set in card payment model for use payment
     @IBInspectable public var currency: String? = nil{ didSet {
         if let currency = currency{
-            _model.cardPaymentmodel.currency = currency
+            _model.usermodel.currency = currency
         }
         else{
-            _model.cardPaymentmodel.currency = nil
+            _model.usermodel.currency = nil
         }
     } }
     
     /// The amount set in card payment model for use payment
     @IBInspectable public var amount: Int = 0{ didSet {
-        _model.cardPaymentmodel.amount = amount
+        _model.usermodel.amount = amount
     } }
 
     /// The endpoint set in card payment model for use payment
     @IBInspectable public var endpoint: String? = nil{ didSet {
         if let endpoint = endpoint{
-            _model.cardPaymentmodel.endpoint = endpoint
+            _model.usermodel.endpoint = endpoint
         }
         else{
-            _model.cardPaymentmodel.endpoint = nil
+            _model.usermodel.endpoint = nil
         }
     } }
     
@@ -85,7 +84,7 @@ import UIKit
         cardPaumentView.cardView.addShadow(color: ColorConstant.shadowColor, radius: 5)
         _model.showLoading = {
             self.activityIndicator.startAnimating()
-            if self._model.cardPaymentmodel.isEnable{
+            if self._model.cardmodel.isEnable{
                 self.cardPaumentView.inputFieldDisable(isDisable: true)
             }else{
                 self.cardPaumentView.inputFieldDisable(isDisable: false)
@@ -97,6 +96,10 @@ import UIKit
         }
         _model.showError = { error in
             self.alertGenrate(title: "error", message:error?.localizedDescription ?? "" )
+        }
+        _model.presentAlert = { title,message,resp in
+            self.alertGenrateWithResp(title: title, message: message, responce: resp)
+//            self.alertGenrate(title: title, message:message )
         }
         _model.afterPayment = { responce in
             switch responce{
@@ -169,8 +172,20 @@ extension CardPaymentViewController{
             `self`.present(alert, animated: true, completion: nil)
         }
     }
+    func alertGenrateWithResp(title:String,message:String,responce:@escaping ()->()){
+        if `self` == self{
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .default) { k in
+                alert.removeFromParent()
+                responce()
+            }
+            alert.addAction(ok)
+            `self`.present(alert, animated: true, completion: nil)
+        }
+    }
     func stopActivity(){
         if `self` == self{
+            `self`.activityIndicator.hidesWhenStopped = true
             `self`.activityIndicator.stopAnimating()
         }
     }

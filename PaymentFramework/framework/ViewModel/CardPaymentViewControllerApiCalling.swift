@@ -18,12 +18,21 @@ class CardPaymentViewModel{
     
     var viewController:CardPaymentViewController?
     var showError: ((Error?)->())?
+    var presentAlert: ((String,String,@escaping ()->())->())?
     var showLoading: (()->())?
     var hideLoading: (()->())?
     var modelDidSet: (()->())?
     var afterPayment: ((responce)->())?
     
-    var cardPaymentmodel:CardPaymentModel = CardPaymentModel.shared {
+    var cardmodel:CardModel = CardModel.shared {
+        didSet{
+            guard let modelDidSet = modelDidSet else {
+                return
+            }
+            modelDidSet()
+        }
+    }
+    var usermodel:UserModel = UserModel.shared {
         didSet{
             guard let modelDidSet = modelDidSet else {
                 return
@@ -46,26 +55,27 @@ class CardPaymentViewModel{
 
 extension CardPaymentViewModel{
     private func getApiKey(){
-        let body:[String:Any] = [StringConstant.bodyemail:cardPaymentmodel.email ?? ""]
-        APIManager.shared.getPostData(url: APIManager.Constants.URLs.REGISTER_API, body: body) { data, error in
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    self.presentError(error)
-                }
-                return
-            }
-            do{
-                let resp = try JSONDecoder().decode(APIManager.ApiKey.self, from: data)
-                DispatchQueue.main.async {
-                    self.cardPaymentmodel.apikey = resp.apikey
+        let body:[String:Any] = [StringConstant.bodyemail:usermodel.email ?? ""]
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.REGISTER_API, body: body) { result in
+            switch result{
+            case .success(let data):
+                do{
+                    let resp = try JSONDecoder().decode(APIManager.ApiKey.self, from: data)
                     DispatchQueue.main.async {
-//                        self.presentLodingHide()
-                        print(self.cardPaymentmodel.apikey)
-                        self.getToken()
+                        self.usermodel.apikey = resp.apikey
+                        DispatchQueue.main.async {
+//                            self.presentLodingHide()
+                            self.getToken()
+                        }
                     }
                 }
-            }
-            catch{
+                catch{
+                    DispatchQueue.main.async {
+                        self.presentError(error)
+                    }
+                }
+                
+            case .failure(let error):
                 DispatchQueue.main.async {
                     self.presentError(error)
                 }
@@ -74,23 +84,30 @@ extension CardPaymentViewModel{
     }
     
     private func getToken(){
-        let body:[String:Any] = [StringConstant.bodyplaintext:[StringConstant.bodynumber:cardPaymentmodel.number,StringConstant.bodyexpiry:"\(cardPaymentmodel.expiryMonth ?? 00)/\(cardPaymentmodel.expiryYear ?? 00 )",StringConstant.bodycvv:cardPaymentmodel.cvv]]
-        APIManager.shared.getPostData(url: APIManager.Constants.URLs.TOKENIZE_API, body: body, apikey: cardPaymentmodel.apikey) { data, error in
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    self.presentError(error)
+        let body:[String:Any] = [StringConstant.bodyplaintext:[StringConstant.bodynumber:cardmodel.number, StringConstant.bodyexpiryMonth:"\(cardmodel.expiryMonth ?? 00)", StringConstant.bodyexpiryYear: "\(cardmodel.expiryYear ?? 00 )"/*, StringConstant.bodycvv:cardPaymentmodel.cvv*/]]
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.TOKENIZE_API, body: body, apikey: usermodel.apikey) { result in
+            switch result{
+            case .success(let data):
+                do{
+                    let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
+                    print(resp.token ?? "no token")
+//                    self.cardPaymentmodel.token = resp.token
+                    
+                    DispatchQueue.main.async {
+//                        self.presentLodingHide()
+                        self.usermodel.token = resp.token
+                        self.PresentAlert("Token", message: resp.token ?? "") {
+//                            self.PaymentForword()
+                        }
+                            
+                    }
                 }
-                return
-            }
-            do{
-                let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
-                self.cardPaymentmodel.token = resp.token
-                DispatchQueue.main.async {
-//                    self.presentLodingHide()
-                    self.PaymentForword()
+                catch{
+                    DispatchQueue.main.async {
+                        self.presentError(error)
+                    }
                 }
-            }
-            catch{
+            case .failure(let error):
                 DispatchQueue.main.async {
                     self.presentError(error)
                 }
@@ -99,23 +116,24 @@ extension CardPaymentViewModel{
     }
     
     private func PaymentForword(){
-        let body:[String:Any] = [StringConstant.bodyheaders:[StringConstant.bodymyauth:123],StringConstant.bodybody:[StringConstant.bodyname:cardPaymentmodel.name ?? "",StringConstant.bodycountry:cardPaymentmodel.country ?? "",StringConstant.bodycurrency:cardPaymentmodel.currency ?? "",StringConstant.bodyamount:cardPaymentmodel.amount,StringConstant.bodycc:"{{json:\(String(describing: cardPaymentmodel.token)):number}}", StringConstant.bodendpoint:cardPaymentmodel.endpoint ?? ""]]
+        let body:[String:Any] = [StringConstant.bodyheaders:[StringConstant.bodymyauth:123],StringConstant.bodybody:[StringConstant.bodyname:cardmodel.name ?? "",StringConstant.bodycountry:usermodel.country ?? "",StringConstant.bodycurrency:usermodel.currency ?? "",StringConstant.bodyamount:usermodel.amount,StringConstant.bodycc:"{{json:\(String(describing: usermodel.token)):number}}", StringConstant.bodendpoint:usermodel.endpoint ?? ""]]
         
-        APIManager.shared.getPostData(url: APIManager.Constants.URLs.FORWARD_API, body: body, apikey: cardPaymentmodel.apikey) { data, error in
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    self.presentError(error)
+        APIManager.shared.getPostData(url: APIManager.Constants.URLs.FORWARD_API, body: body, apikey: usermodel.apikey) { result in
+            switch result{
+            case .success(let data):
+                do{
+                    let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
+                    self.usermodel.token = resp.token
+                    DispatchQueue.main.async {
+                        self.presentLodingHide()
+                    }
                 }
-                return
-            }
-            do{
-                let resp = try JSONDecoder().decode(APIManager.Token.self, from: data)
-                self.cardPaymentmodel.token = resp.token
-                DispatchQueue.main.async {
-                    self.presentLodingHide()
+                catch{
+                    DispatchQueue.main.async {
+                        self.presentError(error)
+                    }
                 }
-            }
-            catch{
+            case .failure(let error):
                 DispatchQueue.main.async {
                     self.presentError(error)
                 }
@@ -132,6 +150,16 @@ extension CardPaymentViewModel{
                 return
             }
             showError(error)
+        }
+    }
+    private func PresentAlert(_ title:String,message:String,responce:@escaping()->()){
+        presentLodingHide()
+        DispatchQueue.main.async {
+            guard let presentAlert = self.presentAlert else {
+                return
+            }
+            presentAlert(title,message,responce)
+            
         }
     }
     private func presentLodingHide(){

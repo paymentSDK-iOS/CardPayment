@@ -20,10 +20,10 @@ class APIManager{
         struct URLs {
             static var  BASE_API:String = "https://stage-api.stage-easymerchant.io/api/tokenizer"
             static var REGISTER_API:String {
-                return Constants.URLs.BASE_API+"/users/register"
+                return Constants.URLs.BASE_API+"/user/register"
             }
             static var TOKENIZE_API:String {
-                return Constants.URLs.BASE_API+"/tokenizer/token/create"
+                return Constants.URLs.BASE_API+"/token/create"
             }
             static var FORWARD_API:String {
                 return Constants.URLs.BASE_API+"/tk/forward"
@@ -54,28 +54,27 @@ class APIManager{
         static let myauth = "myauth"
     }
     
-    struct ApiKey:Decodable{
-        var apikey:String?
+    class ApiKey:Decodable{
+        var apikey:String
     }
     
-    struct Token:Decodable{
+    class Token:Decodable{
         var token:String? = nil
     }
 }
 
 extension APIManager{
-    func getPostData(url:String,body:[String:Any],apikey:String? = nil,authName:String? = nil,complitionHandler: @escaping(Data?,Error?)-> ()){
+    func getPostData(url:String,body:[String:Any],apikey:String? = nil,authName:String? = nil,complitionHandler: @escaping(/*Data?,Error?*/Result<Data,Error>)-> ()){
         guard let url = URL(string: url) else{ return }
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethods.httpMethodPost
-        request.addValue(HTTPMethods.contentTypeHeader, forHTTPHeaderField: HTTPMethods.jsonContentType)
+        request.setValue(HTTPMethods.jsonContentType, forHTTPHeaderField: HTTPMethods.contentTypeHeader)
         if let apikey = apikey {
             request.addValue(apikey, forHTTPHeaderField: HTTPMethods.AuthorizationHeader)
         }
         if let authName = authName {
             request.addValue(authName, forHTTPHeaderField: HTTPMethods.myauth)
         }
-        
         // prepare json data
         let json: [String: Any] = body
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
@@ -84,17 +83,15 @@ extension APIManager{
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
-                complitionHandler(nil, error)
+                complitionHandler(.failure(error!))
                 return
             }
-            complitionHandler(data, nil)
+            complitionHandler(.success(data))
         }
         task.resume()
     }
     
 }
-
-
 
 //    private func getApiKey(email:String,complitionHandler: @escaping(Bool,Error?)-> ()){
 //        guard let url = URL(string: Constants.URLs.REGISTER_API) else{ return }

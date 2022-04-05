@@ -8,10 +8,10 @@
 import UIKit
 
 //MARK: - Card Payment View Model
-struct CardPaymentModel {
+struct CardModel {
     
     //MARK: Shared Instance
-    static let shared = CardPaymentModel()
+    static let shared = CardModel()
     
     // MARK: Inputs
     var number: String?
@@ -20,14 +20,7 @@ struct CardPaymentModel {
     var expiryMonth: Int?
     var cvv: String?
     
-    var apikey:String?
-    var token:String?
-    
-    var email:String?
-    var country:String?
-    var currency:String?
-    var amount:Int = 0
-    var endpoint:String?
+    var userModel:UserModel = UserModel.shared
     
     var currentYear: Int
     var currentMonth: Int
@@ -65,9 +58,9 @@ struct CardPaymentModel {
 }
 
 // MARK: - Valid Check Properties
-extension CardPaymentModel {
+extension CardModel {
     var cardValid: Bool {
-        return numberValid && cvvValid && expiryValid //expiryDateValid
+        return numberValid && cvvValid && expiryValid && userModel.email != nil//expiryDateValid
     }
     
     var numberValid: Bool {
@@ -92,7 +85,7 @@ extension CardPaymentModel {
 }
 
 // MARK: - Formate set Properties
-extension CardPaymentModel{
+extension CardModel{
    
     var formattedCardNumber: String? {
         get {
@@ -148,7 +141,7 @@ extension CardPaymentModel{
 }
 
 // MARK: Expiration Picker Properties
-extension CardPaymentModel{
+extension CardModel{
     var expiryMonthValues: [Int] { return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
     var expiryYearValues: [Int] { return Array((currentYear ..< (currentYear + numberOfExpiryYears))) }
     var expiryMonthTitles: [String] {
@@ -193,7 +186,7 @@ extension CardPaymentModel{
 }
 
 //MARK: - FilePrivate Method
-extension CardPaymentModel {
+extension CardModel {
     fileprivate var brand: CardBrand {
         guard let number = number else { return .unknown }
         return CardBrand.detectBrand(number)
